@@ -45,9 +45,14 @@ const SignUp = () => {
     };
 
     const handleVerify = async () => {
-        await signUp.verifications.verifyEmailCode({
+        const { error } = await signUp.verifications.verifyEmailCode({
             code,
         });
+
+        if (error) {
+            console.error(JSON.stringify(error, null, 2));
+            return;
+        }
 
         if (signUp.status === 'complete') {
             await signUp.finalize({
@@ -103,10 +108,10 @@ const SignUp = () => {
                             <View className="auth-brand-block">
                                 <View className="auth-logo-wrap">
                                     <View className="auth-logo-mark">
-                                        <Text className="auth-logo-mark-text">R</Text>
+                                        <Text className="auth-logo-mark-text">S</Text>
                                     </View>
                                     <View>
-                                        <Text className="auth-wordmark">Recurrly</Text>
+                                        <Text className="auth-wordmark">Subora</Text>
                                         <Text className="auth-wordmark-sub">SUBSCRIPTIONS</Text>
                                     </View>
                                 </View>
@@ -182,7 +187,7 @@ const SignUp = () => {
                                     <Text className="auth-logo-mark-text">R</Text>
                                 </View>
                                 <View>
-                                    <Text className="auth-wordmark">Recurrly</Text>
+                                    <Text className="auth-wordmark">Subora</Text>
                                     <Text className="auth-wordmark-sub">SUBSCRIPTIONS</Text>
                                 </View>
                             </View>

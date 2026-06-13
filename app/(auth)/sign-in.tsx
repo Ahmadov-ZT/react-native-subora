@@ -1,14 +1,14 @@
-import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import { Link, useRouter, type Href } from 'expo-router';
-import { useSignIn } from '@clerk/expo';
-import { useState } from 'react';
-import { SafeAreaView as RNSafeAreaView } from 'react-native-safe-area-context';
-import { styled } from 'nativewind';
+import {View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
+import {Link, useRouter, type Href} from 'expo-router';
+import {useSignIn} from '@clerk/expo';
+import {useState} from 'react';
+import {SafeAreaView as RNSafeAreaView} from 'react-native-safe-area-context';
+import {styled} from 'nativewind';
 
 const SafeAreaView = styled(RNSafeAreaView);
 
 const SignIn = () => {
-    const { signIn, errors, fetchStatus } = useSignIn();
+    const {signIn, errors, fetchStatus} = useSignIn();
     const router = useRouter();
 
     const [emailAddress, setEmailAddress] = useState('');
@@ -27,7 +27,7 @@ const SignIn = () => {
     const handleSubmit = async () => {
         if (!formValid) return;
 
-        const { error } = await signIn.password({
+        const {error} = await signIn.password({
             emailAddress,
             password,
         });
@@ -39,7 +39,7 @@ const SignIn = () => {
 
         if (signIn.status === 'complete') {
             await signIn.finalize({
-                navigate: ({ session, decorateUrl }) => {
+                navigate: ({session, decorateUrl}) => {
                     if (session?.currentTask) {
                         console.log(session?.currentTask);
                         return;
@@ -77,11 +77,16 @@ const SignIn = () => {
     };
 
     const handleVerify = async () => {
-        await signIn.mfa.verifyEmailCode({ code });
+        const {error} = await signIn.mfa.verifyEmailCode({code});
+
+        if (error) {
+            console.error(JSON.stringify(error, null, 2));
+            return;
+        }
 
         if (signIn.status === 'complete') {
             await signIn.finalize({
-                navigate: ({ session, decorateUrl }) => {
+                navigate: ({session, decorateUrl}) => {
                     if (session?.currentTask) {
                         console.log(session?.currentTask);
                         return;
