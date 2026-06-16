@@ -30,3 +30,5 @@ const UpcomingSubscriptionCard = ({
   );
 };
 export default UpcomingSubscriptionCard;
+
+// Types here there is a note
